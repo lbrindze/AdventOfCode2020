@@ -1,7 +1,6 @@
+extern crate aoc_2020;
+
 use std::env;
-use std::fs::File;
-use std::io::{self, BufRead};
-use std::path::Path;
 use std::str::Split;
 
 #[derive(Clone, Default, Debug, PartialEq)]
@@ -39,12 +38,10 @@ fn main() -> std::io::Result<()> {
     let filename = &args[1];
     let version: u8 = args[2].parse().unwrap();
 
-    if let Ok(lines) = read_lines(filename) {
-        let count = lines.fold(0, |acc, line| {
-            match version {
-                2 => parse_line(line.unwrap()).is_valid_pt2() as u32 + acc,
-                _ => parse_line(line.unwrap()).is_valid() as u32 + acc,
-            }
+    if let Ok(lines) = aoc_2020::read_lines(filename) {
+        let count = lines.fold(0, |acc, line| match version {
+            2 => parse_line(line.unwrap()).is_valid_pt2() as u32 + acc,
+            _ => parse_line(line.unwrap()).is_valid() as u32 + acc,
         });
         println!("total count of valid passwords: {}", count);
     } else {
@@ -52,7 +49,6 @@ fn main() -> std::io::Result<()> {
     }
     Ok(())
 }
-
 
 fn parse_first_char(split: &mut Split<char>) -> char {
     split.next().unwrap().chars().next().unwrap()
@@ -85,16 +81,6 @@ fn parse_line(i: String) -> ValidPassword {
         c: parse_first_char(&mut split),
         password: parse_password(&mut split),
     }
-}
-
-// Wrap output in a result to allow for matching on errors,
-// returns an Iterator of lines from the file
-fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where
-    P: AsRef<Path>,
-{
-    let file = File::open(filename)?;
-    Ok(io::BufReader::new(file).lines())
 }
 
 #[cfg(test)]
