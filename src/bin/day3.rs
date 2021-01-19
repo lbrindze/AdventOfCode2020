@@ -19,7 +19,6 @@ fn parse_args() -> (String, usize, usize) {
 }
 
 fn main() -> std::io::Result<()> {
-
     let (filename, right, down) = parse_args();
 
     if let Ok(lines) = aoc_2020::read_lines(filename) {

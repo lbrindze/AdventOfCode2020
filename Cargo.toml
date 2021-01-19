@@ -11,3 +11,4 @@ name = "aoc_2020"
 path = "src/lib.rs"
 
 [dependencies]
+lazy_static = "1.4.0"
