@@ -4,6 +4,7 @@ extern crate lazy_static;
 use core::str::FromStr;
 use std::collections::HashSet;
 use std::env;
+use std::str;
 
 lazy_static! {
     static ref VALID_ECL: HashSet<&'static str> = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
@@ -79,18 +80,17 @@ impl Passport {
 
         if raw_val[3] == b'c' {
             // val is in cm
-            let hgt_cm: u16 = std::str::from_utf8(&raw_val[..3]).unwrap().parse().unwrap();
+            let hgt_cm: u16 = str::from_utf8(&raw_val[..3]).unwrap().parse().unwrap();
             if hgt_cm > 150 && hgt_cm <= 193 {
                 self.hgt = Some(value.parse().unwrap());
             }
         } else if raw_val[2] == b'i' {
             // val is in in
-            let hgt_in: u16 = std::str::from_utf8(&raw_val[..2]).unwrap().parse().unwrap();
+            let hgt_in: u16 = str::from_utf8(&raw_val[..2]).unwrap().parse().unwrap();
             if hgt_in > 59 && hgt_in <= 76 {
                 self.hgt = Some(value.parse().unwrap());
             }
         }
-
     }
 
     fn parse_hcl(&mut self, value: &str) {
@@ -169,10 +169,6 @@ fn main() -> std::io::Result<()> {
                 }
             }
         }
-        if parse_buffer.parse::<Passport>().unwrap().is_valid() {
-            count += 1;
-        };
-        total += 1;
     }
 
     println!("Total passport counts = {}", total);
