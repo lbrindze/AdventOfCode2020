@@ -3,7 +3,6 @@ extern crate lazy_static;
 
 use core::str::FromStr;
 use std::collections::HashSet;
-use std::env;
 use std::str;
 
 lazy_static! {
@@ -103,7 +102,7 @@ impl Passport {
         self.ecl = match value.parse::<String>() {
             Ok(v) => {
                 if VALID_ECL.contains(v.as_str()) {
-                    Some(v.to_string())
+                    Some(v)
                 } else {
                     None
                 }
@@ -139,15 +138,8 @@ impl FromStr for Passport {
     }
 }
 
-fn parse_args() -> String {
-    let args: Vec<String> = env::args().collect();
-    let filename = &args[1];
-
-    filename.to_string()
-}
-
 fn main() -> std::io::Result<()> {
-    let filename = parse_args();
+    let filename = aoc_2020::parse_simple_args();
 
     let mut count: u16 = 0;
     let mut total: u16 = 0;

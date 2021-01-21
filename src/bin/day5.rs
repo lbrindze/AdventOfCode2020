@@ -1,5 +1,4 @@
 use std::ops::BitXorAssign;
-use std::env;
 use std::str::FromStr;
 
 #[derive(Debug, PartialEq, Default)]
@@ -10,11 +9,10 @@ struct PlaneTicket {
 }
 
 impl BitXorAssign for PlaneTicket {
-
     fn bitxor_assign(&mut self, rhs: Self) {
-        self.id^=rhs.id;
-        self.row^=rhs.row;
-        self.seat^=rhs.seat;
+        self.id ^= rhs.id;
+        self.row ^= rhs.row;
+        self.seat ^= rhs.seat;
     }
 }
 
@@ -39,15 +37,8 @@ impl FromStr for PlaneTicket {
     }
 }
 
-fn parse_args() -> String {
-    let args: Vec<String> = env::args().collect();
-    let filename = &args[1];
-
-    filename.to_string()
-}
-
 fn main() -> std::io::Result<()> {
-    let filename = parse_args();
+    let filename = aoc_2020::parse_simple_args();
     let mut max = 0;
     let mut missing: PlaneTicket = Default::default();
 
