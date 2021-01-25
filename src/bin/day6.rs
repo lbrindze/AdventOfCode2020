@@ -1,12 +1,11 @@
 use std::collections::HashSet;
 
 fn check_anyone_yes(lines: aoc_2020::InputLines) -> u16 {
-
     let mut char_set = HashSet::<char>::new();
     let mut count = 0;
 
-    lines.map(|line| {
-        match line {
+    lines
+        .map(|line| match line {
             Ok(line) if line != *"" => {
                 line.chars().map(|c| char_set.insert(c)).for_each(drop);
             }
@@ -14,19 +13,18 @@ fn check_anyone_yes(lines: aoc_2020::InputLines) -> u16 {
                 count += char_set.len();
                 char_set = HashSet::<char>::new();
             }
-        }
-    }).for_each(drop);
+        })
+        .for_each(drop);
 
     count as u16
 }
 
 fn check_everyone_yes(lines: aoc_2020::InputLines) -> u16 {
-
     let mut in_all_lines = None;
     let mut count = 0;
 
-    lines.map(|line| {
-        match line {
+    lines
+        .map(|line| match line {
             Ok(line) if line != *"" => {
                 let mut char_set = HashSet::<char>::new();
                 line.chars().map(|c| char_set.insert(c)).for_each(drop);
@@ -38,13 +36,13 @@ fn check_everyone_yes(lines: aoc_2020::InputLines) -> u16 {
             _ => {
                 count += match &in_all_lines {
                     Some(set) => set.len(),
-                    None => 0
+                    None => 0,
                 };
 
                 in_all_lines = None;
             }
-        }
-    }).for_each(drop);
+        })
+        .for_each(drop);
 
     count as u16
 }
@@ -54,23 +52,19 @@ fn main() -> std::io::Result<()> {
 
     if let Ok(lines) = aoc_2020::read_lines(filename.clone()) {
         let some_count = check_anyone_yes(lines);
-        println!("Total sum of counts where someone answewred yes: {}", some_count);
+        println!(
+            "Total sum of counts where someone answewred yes: {}",
+            some_count
+        );
     }
 
     if let Ok(lines) = aoc_2020::read_lines(filename) {
         let all_count = check_everyone_yes(lines);
-        println!("Total sum of counts where everyone answered yes: {}", all_count);
+        println!(
+            "Total sum of counts where everyone answered yes: {}",
+            all_count
+        );
     };
 
     Ok(())
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test_case() {
-        assert!(true);
-    }
 }
